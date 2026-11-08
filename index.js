@@ -6,20 +6,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
-
 app.get("/", (req, res) => {
-  res.send("DARK CHARM BOT is running!");
+  res.send("👑 DARK CHARM BOT is running!");
 });
 
 app.get("/health", (req, res) => {
@@ -34,11 +22,34 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-app.post("/api/status", (req, res) => {
+app.post("/api/command", (req, res) => {
+  const command = String(req.body.command || "")
+    .trim()
+    .toLowerCase();
+
+  let reply;
+
+  switch (command) {
+    case ".menu":
+      reply = "👑 DARK CHARM BOT MENU\n\n.ping - Check bot status\n.help - Get help\n.menu - Show commands";
+      break;
+
+    case ".ping":
+      reply = "🏓 PONG! DARK CHARM BOT is ONLINE.";
+      break;
+
+    case ".help":
+      reply = "👑 DARK CHARM BOT HELP\n\nTumia .menu kuona commands zote.";
+      break;
+
+    default:
+      reply = "❌ Command haijatambulika. Tumia .menu";
+  }
+
   res.json({
     success: true,
-    message: "Backend connection successful!",
-    pairing: "not_configured"
+    bot: "DARK CHARM BOT",
+    reply
   });
 });
 
