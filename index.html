@@ -199,12 +199,8 @@ async function sendCommand(selectedCommand) {
     reply.textContent = data.reply;
 
   } catch (error) {
-
-  reply.textContent =
-    "❌ ERROR: " + error.message;
-
+  reply.textContent = "❌ ERROR: " + error.message;
   console.error("DARK CHARM ERROR:", error);
-
   }
 
   } finally {
