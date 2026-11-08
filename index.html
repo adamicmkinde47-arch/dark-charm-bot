@@ -200,8 +200,12 @@ async function sendCommand(selectedCommand) {
 
   } catch (error) {
 
-    reply.textContent =
-      "❌ Connection failed. Check your backend.";
+  reply.textContent =
+    "❌ ERROR: " + error.message;
+
+  console.error("DARK CHARM ERROR:", error);
+
+  }
 
   } finally {
 
