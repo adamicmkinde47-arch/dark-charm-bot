@@ -58,6 +58,21 @@ p {
   box-shadow: 0 0 20px #50008055;
 }
 
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: 1px solid #8700ff;
+  background: #08050d;
+  color: white;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #a78bfa;
+}
+
 button {
   background: linear-gradient(90deg,#7200ff,#bd00ff);
   color: white;
@@ -67,6 +82,7 @@ button {
   font-size: 17px;
   font-weight: bold;
   margin-top: 20px;
+  cursor: pointer;
 }
 
 footer {
@@ -93,19 +109,31 @@ footer {
 <p>Connect • Pair • Enjoy</p>
 
 <div class="panel">
-<h2>WhatsApp Pairing</h2>
+  <h2>WhatsApp Pairing</h2>
 
-<p>Number pairing service</p>
+  <p>Enter your WhatsApp number</p>
 
-<button onclick="alert('Pairing backend is not connected yet.')">
-GET STARTED
-</button>
+  <input
+    type="tel"
+    id="phone"
+    placeholder="2557XXXXXXXX"
+    maxlength="12"
+    autocomplete="off"
+  >
 
-<p style="margin-top:20px;font-size:12px">
-Secure connection. Never share your private codes.
-</p>
+  <button onclick="startPairing()">
+    GET STARTED
+  </button>
 
+  <p id="message" style="margin-top:20px;font-size:12px">
+    Pairing service is not connected yet.
+  </p>
+
+  <p style="margin-top:10px;font-size:12px">
+    Keep your private codes secure.
+  </p>
 </div>
+
 </section>
 
 <footer>
@@ -113,6 +141,21 @@ Secure connection. Never share your private codes.
 <br><br>
 Powered by DARK CHARM
 </footer>
+
+<script>
+function startPairing() {
+  const phone = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message");
+
+  if (!/^255[0-9]{9}$/.test(phone)) {
+    message.textContent = "Enter a valid number in format 255XXXXXXXXX.";
+    return;
+  }
+
+  message.textContent =
+    "Number accepted. WhatsApp pairing backend is not connected yet.";
+}
+</script>
 
 </body>
 </html>
