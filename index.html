@@ -85,6 +85,10 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.6;
+}
+
 footer {
   padding: 25px;
   color: #a78bfa;
@@ -109,9 +113,9 @@ footer {
 <p>Connect • Pair • Enjoy</p>
 
 <div class="panel">
-  <h2>WhatsApp Pairing</h2>
+  <h2>Backend Connection Test</h2>
 
-  <p>Enter your WhatsApp number</p>
+  <p>Enter a test number</p>
 
   <input
     type="tel"
@@ -121,16 +125,16 @@ footer {
     autocomplete="off"
   >
 
-  <button onclick="startPairing()">
-    GET STARTED
+  <button id="startButton" onclick="startPairing()">
+    TEST CONNECTION
   </button>
 
   <p id="message" style="margin-top:20px;font-size:12px">
-    Pairing service is not connected yet.
+    Ready to test backend connection.
   </p>
 
   <p style="margin-top:10px;font-size:12px">
-    Keep your private codes secure.
+    This is a connection test, not WhatsApp pairing.
   </p>
 </div>
 
@@ -143,17 +147,46 @@ Powered by DARK CHARM
 </footer>
 
 <script>
-function startPairing() {
+async function startPairing() {
   const phone = document.getElementById("phone").value.trim();
   const message = document.getElementById("message");
+  const button = document.getElementById("startButton");
 
   if (!/^255[0-9]{9}$/.test(phone)) {
-    message.textContent = "Enter a valid number in format 255XXXXXXXXX.";
+    message.textContent =
+      "Enter a valid test number in format 255XXXXXXXXX.";
     return;
   }
 
-  message.textContent =
-    "Number accepted. WhatsApp pairing backend is not connected yet.";
+  button.disabled = true;
+  message.textContent = "Connecting to DARK CHARM server...";
+
+  try {
+    const response = await fetch(
+      "https://dark-charm-bot-1.onrender.com/api/status",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ phone })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Server error");
+    }
+
+    message.textContent = data.message ||
+      "Backend connection successful!";
+  } catch (error) {
+    message.textContent =
+      "Connection failed. Please try again.";
+  } finally {
+    button.disabled = false;
+  }
 }
 </script>
 
